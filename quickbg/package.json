@@ -1,0 +1,37 @@
+{
+  "name": "quickbg",
+  "version": "1.0.0",
+  "description": "Quick Background Remover - Serverless image background removal tool",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "worker"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:worker\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:worker": "cd worker && npm run dev",
+    "build": "concurrently \"npm run build:frontend\" \"npm run build:worker\"",
+    "build:frontend": "cd frontend && npm run build",
+    "build:worker": "cd worker && npm run build",
+    "deploy": "npm run deploy:worker && npm run deploy:frontend",
+    "deploy:worker": "cd worker && npm run deploy",
+    "deploy:frontend": "cd frontend && npm run deploy"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "background-removal",
+    "serverless",
+    "cloudflare",
+    "remove-bg",
+    "image-processing"
+  ],
+  "author": "码小助 <dev@openclaw.ai>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/quickbg.git"
+  }
+}
