@@ -1,0 +1,14 @@
+name = "bg-remover-worker"
+compatibility_date = "2024-01-01"
+main = "src/index.js"
+
+[vars]
+REMOVE_BG_API_KEY = "{{ secrets.REMOVE_BG_API_KEY }}"
+
+[triggers]
+crons = []
+
+[[rules]]
+type = "WorkerRoute"
+pattern = "api.remove-bg.com/*"
+zone_name = "your-domain.com"
