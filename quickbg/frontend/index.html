@@ -1,11 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    <!-- PWA配置 -->
+    <meta name="theme-color" content="#7c3aed" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="QuickBG" />
+    <link rel="apple-touch-icon" href="/icon-192x192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- SEO优化 -->
     <title>QuickBG - 快速图片背景去除工具</title>
-    <meta name="description" content="基于Cloudflare的无服务器图片背景去除工具，使用Remove.bg API，零存储成本">
+    <meta name="description" content="基于Cloudflare的无服务器图片背景去除工具，使用Remove.bg API，快速、简单、免费">
+    <meta name="keywords" content="图片背景去除,AI去背景,在线图片处理,Remove.bg,Cloudflare">
+    <meta name="author" content="QuickBG Team">
+    <meta property="og:title" content="QuickBG - 快速图片背景去除工具">
+    <meta property="og:description" content="基于Cloudflare的无服务器图片背景去除工具，使用Remove.bg API，快速、简单、免费">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://quickbg.ai">
+    <meta property="og:image" content="https://quickbg.ai/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="QuickBG - 快速图片背景去除工具">
+    <meta name="twitter:description" content="基于Cloudflare的无服务器图片背景去除工具，使用Remove.bg API，快速、简单、免费">
+    <meta name="twitter:image" content="https://quickbg.ai/twitter-image.png">
+    
+    <!-- 性能优化 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://api.quickbg.ai">
+    <link rel="preload" as="style" href="/src/index.css">
+    
     <style>
       * {
         margin: 0;
@@ -27,10 +55,96 @@
         width: 100%;
         max-width: 1200px;
       }
+      
+      /* 加载动画 */
+      .app-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: white;
+        text-align: center;
+      }
+      
+      .app-loading .spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+        margin-bottom: 20px;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- 加载占位符 -->
+    <div id="app">
+      <div class="app-loading">
+        <div class="spinner"></div>
+        <p>正在加载 QuickBG...</p>
+      </div>
+    </div>
+    
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker注册 -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('ServiceWorker注册成功:', registration.scope);
+              
+              // 检查更新
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                console.log('ServiceWorker更新发现:', newWorker);
+                
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.log('新内容可用，请刷新页面');
+                    // 可以在这里显示更新提示
+                  }
+                });
+              });
+            })
+            .catch(error => {
+              console.log('ServiceWorker注册失败:', error);
+            });
+        });
+        
+        // 监听Service Worker消息
+        navigator.serviceWorker.addEventListener('message', event => {
+          console.log('收到Service Worker消息:', event.data);
+        });
+      }
+      
+      // 网络状态检测
+      window.addEventListener('online', () => {
+        console.log('网络已连接');
+        // 可以在这里显示网络恢复提示
+      });
+      
+      window.addEventListener('offline', () => {
+        console.log('网络已断开');
+        // 可以在这里显示离线提示
+      });
+    </script>
+    
+    <!-- 分析脚本（可选） -->
+    <!-- Google Analytics -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script> -->
   </body>
 </html>

@@ -37,5 +37,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/yourusername/quickbg.git"
+  },
+  "dependencies": {
+    "http-proxy": "^1.18.1"
   }
 }
