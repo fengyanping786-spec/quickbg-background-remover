@@ -2,6 +2,7 @@
 name = "quickbg"
 compatibility_date = "2024-01-01"
 
-# Workers 配置
-[workers]
-  # 路由配置可在这里设置
+# Pages 构建配置
+[pages_build_output_dir]
+  # 前端构建输出目录
+  # 注意：Cloudflare Git 集成时需要这个字段
