@@ -1,0 +1,7 @@
+# Cloudflare Pages 配置
+name = "quickbg"
+compatibility_date = "2024-01-01"
+
+# Workers 配置
+[workers]
+  # 路由配置可在这里设置

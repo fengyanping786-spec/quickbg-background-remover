@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileImage, X, Compress, Zap } from 'lucide-react'
+import { Upload, FileImage, X, Shrink as Compress, Zap } from 'lucide-react'
 import { compressImage, needsCompression, getImageInfo } from '../utils/imageCompressor'
 
 interface UploaderProps {
@@ -12,8 +12,8 @@ const Uploader: React.FC<UploaderProps> = ({ onUpload }) => {
   const [fileName, setFileName] = useState<string | null>(null)
   const [fileSize, setFileSize] = useState<string | null>(null)
   const [originalSize, setOriginalSize] = useState<string | null>(null)
-  const [isCompressing, setIsCompressing] = useState(false)
-  const [compressionEnabled, setCompressionEnabled] = useState(true)
+  const [isShrinking, setIsShrinking] = useState(false)
+  const [compressionEnabled, setShrinkionEnabled] = useState(true)
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
@@ -39,7 +39,7 @@ const Uploader: React.FC<UploaderProps> = ({ onUpload }) => {
 
       // 如果需要压缩且启用了压缩
       if (compressionEnabled && needsCompression(file, 1 * 1024 * 1024)) { // 1MB以上压缩
-        setIsCompressing(true)
+        setIsShrinking(true)
         
         try {
           // 压缩图片
@@ -64,7 +64,7 @@ const Uploader: React.FC<UploaderProps> = ({ onUpload }) => {
           console.warn('图片压缩失败，使用原图:', compressError)
           setFileSize((file.size / (1024 * 1024)).toFixed(2) + ' MB')
         } finally {
-          setIsCompressing(false)
+          setIsShrinking(false)
         }
       } else {
         setFileSize((file.size / (1024 * 1024)).toFixed(2) + ' MB')
@@ -149,12 +149,12 @@ const Uploader: React.FC<UploaderProps> = ({ onUpload }) => {
           <div className="flex items-start justify-between mb-3 md:mb-4">
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center ${
-                isCompressing 
+                isShrinking 
                   ? 'bg-gradient-to-br from-yellow-100 to-orange-100' 
                   : 'bg-gradient-to-br from-green-100 to-blue-100'
               }`}>
-                {isCompressing ? (
-                  <Compress className="w-5 h-5 md:w-6 md:h-6 text-yellow-600 animate-pulse" />
+                {isShrinking ? (
+                  <Shrink className="w-5 h-5 md:w-6 md:h-6 text-yellow-600 animate-pulse" />
                 ) : (
                   <FileImage className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
                 )}
@@ -169,7 +169,7 @@ const Uploader: React.FC<UploaderProps> = ({ onUpload }) => {
                       已压缩
                     </span>
                   )}
-                  {isCompressing && (
+                  {isShrinking && (
                     <span className="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded text-xs animate-pulse">
                       压缩中...
                     </span>
@@ -185,7 +185,7 @@ const Uploader: React.FC<UploaderProps> = ({ onUpload }) => {
                   <input
                     type="checkbox"
                     checked={compressionEnabled}
-                    onChange={(e) => setCompressionEnabled(e.target.checked)}
+                    onChange={(e) => setShrinkionEnabled(e.target.checked)}
                     className="sr-only peer"
                   />
                   <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>

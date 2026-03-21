@@ -646,4 +646,26 @@ class UserClient {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : '更新
+        error: error instanceof Error ? error.message : '更新组织失败'
+      }
+    }
+  }
+
+  /**
+   * 删除组织
+   */
+  async deleteOrganization(id: string): Promise<ApiResponse<void>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/user/organizations/${id}`, {
+        method: 'DELETE',
+        headers: this.getAuthHeaders()
+      })
+      return this.handleResponse<void>(response)
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '删除组织失败'
+      }
+    }
+  }
+}

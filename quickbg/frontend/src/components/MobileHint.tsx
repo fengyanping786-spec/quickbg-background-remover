@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Smartphone, SwipeUp, SwipeDown, X } from 'lucide-react'
+import { Smartphone, ArrowUp, ArrowDown, X } from 'lucide-react'
 
 const MobileHint: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false)
@@ -61,7 +61,7 @@ const MobileHint: React.FC = () => {
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-white/10 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-2">
-              <SwipeUp className="w-4 h-4" />
+              <ArrowUp className="w-4 h-4" />
               <span className="text-xs font-medium">上滑查看结果</span>
             </div>
             <p className="text-xs opacity-80">处理完成后，上滑查看下载区域</p>
@@ -69,7 +69,7 @@ const MobileHint: React.FC = () => {
           
           <div className="bg-white/10 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-2">
-              <SwipeDown className="w-4 h-4" />
+              <ArrowDown className="w-4 h-4" />
               <span className="text-xs font-medium">下拉刷新</span>
             </div>
             <p className="text-xs opacity-80">遇到问题时，下拉页面刷新</p>

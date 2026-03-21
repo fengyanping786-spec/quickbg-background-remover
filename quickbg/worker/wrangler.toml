@@ -1,6 +1,7 @@
 name = "quickbg-worker"
 compatibility_date = "2024-01-01"
 main = "src/index.js"
+account_id = "1813a08569eee03a6147d2011d25a607"
 
 [vars]
 REMOVE_BG_API_KEY = "{{ secrets.REMOVE_BG_API_KEY }}"
@@ -9,15 +10,6 @@ REMOVE_BG_API_KEY = "{{ secrets.REMOVE_BG_API_KEY }}"
 port = 8787
 local_protocol = "http"
 upstream_protocol = "https"
-
-# 路由配置
-[[routes]]
-pattern = "api.quickbg.ai/*"
-zone_name = "quickbg.ai"
-
-[[routes]]
-pattern = "*.quickbg-worker.*.workers.dev/*"
-zone_name = "workers.dev"
 
 # 环境配置
 [env.production]

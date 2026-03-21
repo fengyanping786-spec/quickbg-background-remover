@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记忆翻牌游戏演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h3 {
+            color: #2575fc;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .feature-card li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .games {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .game-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .game-content {
+            padding: 25px;
+        }
+        
+        .game-content h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .game-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #2575fc;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #1a68e8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #555;
+        }
+        
+        .instructions {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .instructions h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .instruction-item {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .instruction-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .features, .games, .instruction-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 记忆翻牌游戏</h1>
+            <p class="subtitle">基于Web的记忆力训练游戏 - 纯HTML/CSS/JavaScript实现</p>
+            <p>翻开两张相同的牌消除，在限定时间内完成所有配对！</p>
+        </header>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>🎮 游戏特点</h3>
+                <ul>
+                    <li>✅ 60秒计时挑战</li>
+                    <li>✅ 分数系统与时间奖励</li>
+                    <li>✅ 3次提示机会</li>
+                    <li>✅ 实时统计数据</li>
+                    <li>✅ 游戏结果分析</li>
+                    <li>✅ 响应式设计</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>💻 技术实现</h3>
+                <ul>
+                    <li>🔧 CSS3 3D翻转动画</li>
+                    <li>🔧 Fisher-Yates洗牌算法</li>
+                    <li>🔧 JavaScript游戏逻辑</li>
+                    <li>🔧 事件驱动架构</li>
+                    <li>🔧 触摸屏优化</li>
+                    <li>🔧 键盘快捷键支持</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🎯 教育价值</h3>
+                <ul>
+                    <li>🧠 锻炼短期记忆力</li>
+                    <li>👁️ 训练视觉空间记忆</li>
+                    <li>⚡ 提高反应速度</li>
+                    <li>🎲 培养策略思维</li>
+                    <li>😊 寓教于乐的学习方式</li>
+                    <li>📱 随时随地可玩</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="games">
+            <div class="game-card">
+                <div class="game-header">
+                    <h2>完整版游戏</h2>
+                    <p>功能丰富，视觉效果出色</p>
+                </div>
+                <div class="game-content">
+                    <h3>memory-card-game.html</h3>
+                    <p>包含完整的游戏功能，丰富的动画效果，详细的统计信息，适合展示和学习。</p>
+                    <p><strong>文件大小：</strong> ~18KB</p>
+                    <p><strong>特点：</strong> 渐变背景、3D效果、庆祝动画、详细统计</p>
+                    <div style="margin-top: 20px;">
+                        <a href="memory-card-game.html" class="btn" target="_blank">🎮 玩完整版</a>
+                        <a href="memory-card-game.html" class="btn btn-secondary" download>📥 下载完整版</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-header">
+                    <h2>简洁版游戏</h2>
+                    <p>核心功能，代码简洁</p>
+                </div>
+                <div class="game-content">
+                    <h3>memory-game-simple.html</h3>
+                    <p>包含所有核心游戏功能，代码更简洁，适合快速体验和代码学习。</p>
+                    <p><strong>文件大小：</strong> ~13KB</p>
+                    <p><strong>特点：</strong> 简洁界面、核心功能、易于理解</p>
+                    <div style="margin-top: 20px;">
+                        <a href="memory-game-simple.html" class="btn" target="_blank">🎮 玩简洁版</a>
+                        <a href="memory-game-simple.html" class="btn btn-secondary" download>📥 下载简洁版</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>📖 游戏说明</h2>
+            <div class="instruction-grid">
+                <div class="instruction-item">
+                    <div class="icon">🎯</div>
+                    <h3>游戏目标</h3>
+                    <p>在60秒内翻开所有相同的卡片对</p>
+                </div>
+                <div class="instruction-item">
+                    <div class="icon">🖱️</div>
+                    <h3>操作方式</h3>
+                    <p>点击卡片翻开，匹配两张相同的卡片</p>
+                </div>
+                <div class="instruction-item">
+                    <div class="icon">⌨️</div>
+                    <h3>快捷键</h3>
+                    <p>空格开始，H提示，R重置，ESC关闭</p>
+                </div>
+                <div class="instruction-item">
+                    <div class="icon">📊</div>
+                    <h3>计分规则</h3>
+                    <p>配对+100分，剩余时间×10奖励分</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="feature-card">
+            <h3>🚀 快速开始指南</h3>
+            <p>选择任一版本的游戏文件，用以下方式之一运行：</p>
+            <ol style="margin: 15px 0 15px 20px;">
+                <li>直接双击HTML文件在浏览器中打开</li>
+                <li>拖拽文件到浏览器窗口</li>
+                <li>使用本地服务器运行（如：<code>python -m http.server</code>）</li>
+                <li>复制代码到在线代码编辑器（如CodePen、JSFiddle）</li>
+            </ol>
+            <p>游戏无需安装任何依赖，纯前端实现，开箱即用！</p>
+        </div>
+        
+        <footer>
+            <p>记忆翻牌游戏 &copy; 2024 | 使用纯HTML、CSS、JavaScript构建</p>
+            <p>代码开源，欢迎学习和修改！</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 添加一些交互效果
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.textContent.includes('下载')) {
+                    alert('游戏文件将开始下载！');
+                }
+            });
+        });
+        
+        // 控制台欢迎信息
+        console.log(`
+        🎮 记忆翻牌游戏演示页面
+        ========================
+        选择完整版或简洁版开始游戏！
+        
+        完整版：丰富的视觉效果和功能
+        简洁版：核心功能，代码简洁
+        
+        游戏特点：
+        • 纯前端实现，无需后端
+        • 响应式设计，支持移动端
+        • 键盘快捷键支持
+        • 触摸屏优化
+        
+        开始你的记忆力训练吧！🧠
+        `);
+    </script>
+</body>
+</html>
