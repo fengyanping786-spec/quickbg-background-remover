@@ -1,0 +1,171 @@
+name: Deploy to Cloudflare
+
+on:
+  push:
+    branches: [ main, preview ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd frontend && npm ci
+        cd ../worker && npm ci
+    
+    - name: Run tests
+      run: |
+        npm test -- --watchAll=false
+        cd frontend && npm test -- --watchAll=false
+        cd ../worker && npm test
+
+  deploy-production:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd frontend && npm ci
+        cd ../worker && npm ci
+    
+    - name: Build project
+      run: |
+        cd frontend && npm run build
+        cd ../worker && npm run build
+    
+    - name: Deploy to Cloudflare
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        command: deploy
+        workingDirectory: 'worker'
+        environment: 'production'
+    
+    - name: Deploy frontend to Cloudflare Pages
+      uses: cloudflare/pages-action@v1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: 'quickbg'
+        directory: 'frontend/dist'
+        branch: 'main'
+    
+    - name: Send deployment notification
+      if: success()
+      run: |
+        echo "✅ Production deployment completed!"
+        echo "🌍 Frontend: https://quickbg.pages.dev"
+        echo "🔧 API: https://api.quickbg.ai"
+
+  deploy-preview:
+    needs: test
+    if: github.ref == 'refs/heads/preview'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd frontend && npm ci
+        cd ../worker && npm ci
+    
+    - name: Build project
+      run: |
+        cd frontend && npm run build
+        cd ../worker && npm run build
+    
+    - name: Deploy to Cloudflare (Staging)
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        command: deploy
+        workingDirectory: 'worker'
+        environment: 'staging'
+    
+    - name: Deploy frontend to Cloudflare Pages (Preview)
+      uses: cloudflare/pages-action@v1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: 'quickbg'
+        directory: 'frontend/dist'
+        branch: 'preview'
+    
+    - name: Send preview deployment notification
+      if: success()
+      run: |
+        echo "✅ Preview deployment completed!"
+        echo "🚀 Preview Frontend: https://preview.quickbg.pages.dev"
+        echo "⚙️ Preview API: https://staging.quickbg-worker.your-account.workers.dev"
+
+  deploy-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd frontend && npm ci
+        cd ../worker && npm ci
+    
+    - name: Build project
+      run: |
+        cd frontend && npm run build
+        cd ../worker && npm run build
+    
+    - name: Run linting
+      run: |
+        cd frontend && npm run lint
+        cd ../worker && npm run lint
+    
+    - name: Create deployment preview
+      run: |
+        echo "📋 PR #${{ github.event.pull_request.number }} preview ready"
+        echo "🔗 View changes at: ${{ github.event.pull_request.html_url }}"
