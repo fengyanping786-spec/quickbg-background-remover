@@ -26,16 +26,21 @@ function App() {
     const defaultApiEndpoint = import.meta.env.VITE_API_URL || 'http://localhost:8787'
     const appName = import.meta.env.VITE_APP_NAME || 'QuickBG'
     
-    return saved ? JSON.parse(saved) : {
+    // 强制在生产环境禁用 mock API
+    const baseSettings = saved ? JSON.parse(saved) : {
       processing: { format: 'png', quality: 100, removeShadow: true, enhanceEdges: false, autoCrop: false },
       ui: { theme: 'auto', language: 'zh', animationSpeed: 'normal', showTutorial: true },
       advanced: { 
         apiEndpoint: defaultApiEndpoint, 
-        useMockApi: import.meta.env.MODE === 'development', 
+        useMockApi: false,
         debugMode: false, 
         saveHistory: true 
       }
     }
+    
+    // 强制覆盖 useMockApi 为 false
+    baseSettings.advanced.useMockApi = false
+    return baseSettings
   })
   const [toasts, setToasts] = useState<any[]>([])
   const [showTutorial, setShowTutorial] = useState(true)
