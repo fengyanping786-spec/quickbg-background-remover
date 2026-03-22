@@ -35,7 +35,7 @@ class ErrorMonitor {
     
     this.config = {
       enabled: true,
-      environment: process.env.NODE_ENV as any || 'development',
+      environment: (import.meta.env.MODE as 'development' | 'production' | 'staging') || 'development',
       sampleRate: 1.0,
       maxErrorsPerMinute: 10,
       ignoreErrors: [
@@ -320,8 +320,8 @@ class ErrorMonitor {
 
 // 创建全局实例
 const errorMonitor = new ErrorMonitor({
-  enabled: process.env.NODE_ENV === 'production',
-  environment: process.env.NODE_ENV as any || 'development',
+  enabled: import.meta.env.MODE === 'production',
+  environment: (import.meta.env.MODE as 'development' | 'production' | 'staging') || 'development',
   sampleRate: 0.5, // 50%采样率
   maxErrorsPerMinute: 20
 })

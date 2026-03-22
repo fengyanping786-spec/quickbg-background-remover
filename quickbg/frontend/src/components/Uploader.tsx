@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileImage, X, Shrink as Compress, Zap } from 'lucide-react'
+import { Upload, FileImage, X, Minimize2 as Compress, Zap } from 'lucide-react'
 import { compressImage, needsCompression, getImageInfo } from '../utils/imageCompressor'
 
 interface UploaderProps {
@@ -154,7 +154,7 @@ const Uploader: React.FC<UploaderProps> = ({ onUpload }) => {
                   : 'bg-gradient-to-br from-green-100 to-blue-100'
               }`}>
                 {isShrinking ? (
-                  <Shrink className="w-5 h-5 md:w-6 md:h-6 text-yellow-600 animate-pulse" />
+                  <Compress className="w-5 h-5 md:w-6 md:h-6 text-yellow-600 animate-pulse" />
                 ) : (
                   <FileImage className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
                 )}

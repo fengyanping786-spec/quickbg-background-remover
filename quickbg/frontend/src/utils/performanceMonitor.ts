@@ -114,7 +114,7 @@ class PerformanceMonitor {
    */
   private getLCP(): number | undefined {
     if ('PerformanceObserver' in window) {
-      const entries = performance.getEntriesByType('largest-contentful-paint')
+      const entries = performance.getEntriesByType('largest-contentful-paint') as any[]
       return entries[entries.length - 1]?.renderTime || entries[entries.length - 1]?.loadTime
     }
     return undefined
@@ -125,7 +125,7 @@ class PerformanceMonitor {
    */
   private getFID(): number | undefined {
     if ('PerformanceObserver' in window) {
-      const entries = performance.getEntriesByType('first-input')
+      const entries = performance.getEntriesByType('first-input') as any[]
       return entries[0]?.processingStart - entries[0]?.startTime
     }
     return undefined
@@ -159,7 +159,7 @@ class PerformanceMonitor {
     // 观察LCP
     try {
       const lcpObserver = new PerformanceObserver((entryList) => {
-        const entries = entryList.getEntries()
+        const entries = entryList.getEntries() as any[]
         const lastEntry = entries[entries.length - 1]
         this.recordMetric('LCP', lastEntry.renderTime || lastEntry.loadTime)
       })
@@ -171,7 +171,7 @@ class PerformanceMonitor {
     // 观察FID
     try {
       const fidObserver = new PerformanceObserver((entryList) => {
-        const entries = entryList.getEntries()
+        const entries = entryList.getEntries() as any[]
         const firstEntry = entries[0]
         const fid = firstEntry.processingStart - firstEntry.startTime
         this.recordMetric('FID', fid)
@@ -287,7 +287,7 @@ class PerformanceMonitor {
    */
   getReport(): {
     metrics: PerformanceMetric[]
-    coreWebVitals: ReturnType<typeof this.getCoreWebVitals>
+    coreWebVitals: { fcp?: number; lcp?: number; fid?: number; cls?: number; ttfb?: number }
     summary: {
       totalMetrics: number
       averageLoadTime?: number
@@ -314,7 +314,7 @@ class PerformanceMonitor {
 
 // 创建全局实例
 const performanceMonitor = new PerformanceMonitor({
-  enabled: process.env.NODE_ENV === 'development',
+  enabled: import.meta.env.MODE === 'development',
   sampleRate: 0.1 // 10%采样率
 })
 

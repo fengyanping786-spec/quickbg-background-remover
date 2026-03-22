@@ -3,6 +3,11 @@
  * 用于跟踪用户行为和业务指标
  */
 
+// 声明全局变量
+declare const gtag: any
+declare const amplitude: any
+declare const mixpanel: any
+
 interface AnalyticsEvent {
   name: string
   properties?: Record<string, any>
@@ -32,7 +37,7 @@ class Analytics {
     
     this.config = {
       enabled: true,
-      environment: process.env.NODE_ENV as any || 'development',
+      environment: (import.meta.env.MODE as 'development' | 'production' | 'staging') || 'development',
       sampleRate: 1.0,
       debug: false,
       ...config
@@ -131,7 +136,7 @@ class Analytics {
       try {
         // LCP
         const lcpObserver = new PerformanceObserver((entryList) => {
-          const entries = entryList.getEntries()
+          const entries = entryList.getEntries() as any[]
           const lastEntry = entries[entries.length - 1]
           this.track('web_vital_lcp', {
             value: lastEntry.renderTime || lastEntry.loadTime,
@@ -311,10 +316,10 @@ class Analytics {
 
 // 创建全局实例
 const analytics = new Analytics({
-  enabled: process.env.NODE_ENV === 'production' && import.meta.env.VITE_ENABLE_ANALYTICS === 'true',
-  environment: process.env.NODE_ENV as any || 'development',
+  enabled: import.meta.env.MODE === 'production' && import.meta.env.VITE_ENABLE_ANALYTICS === 'true',
+  environment: (import.meta.env.MODE as 'development' | 'production' | 'staging') || 'development',
   sampleRate: 1.0,
-  debug: process.env.NODE_ENV === 'development',
+  debug: import.meta.env.MODE === 'development',
   googleAnalyticsId: import.meta.env.VITE_GOOGLE_ANALYTICS_ID
 })
 

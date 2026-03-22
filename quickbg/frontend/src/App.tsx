@@ -7,6 +7,7 @@ import Loading, { FullScreenLoading } from './components/Loading'
 import Settings, { AppSettings } from './components/Settings'
 import History, { addToHistory, HistoryItem } from './components/History'
 import { ToastContainer, createToastHelpers } from './components/Toast'
+import Toast from './components/Toast'
 import MobileHint from './components/MobileHint'
 import NetworkStatus from './components/NetworkStatus'
 import { PageSkeleton } from './components/Skeleton'
@@ -181,7 +182,7 @@ function App() {
       recordPerformanceMetric('background_removal_exception', 1, 'count')
       
       // 记录错误到监控系统
-      captureError(err, {
+      captureError(err instanceof Error ? err : errorMessage, {
         type: 'background_removal',
         file: currentFile?.name,
         fileSize: currentFile?.size,
@@ -248,8 +249,8 @@ function App() {
       {/* Toast通知 */}
       <div className="fixed top-4 right-4 left-4 md:left-auto z-50 w-auto md:w-full max-w-sm">
         {toasts.map(toast => {
-          const Toast = require('./components/Toast').default
-          return <Toast key={toast.id} toast={toast} onRemove={removeToast} />
+          const ToastComponent = Toast
+          return <ToastComponent key={toast.id} toast={toast} onRemove={removeToast} />
         })}
       </div>
 
