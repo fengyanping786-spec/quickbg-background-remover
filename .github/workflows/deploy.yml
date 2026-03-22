@@ -23,14 +23,14 @@ jobs:
     
     - name: Install dependencies
       run: |
-        npm ci
-        cd frontend && npm ci
+        cd quickbg && npm ci
+        cd quickbg/frontend && npm ci
         cd ../worker && npm ci
     
     - name: Run tests
       run: |
-        npm test -- --watchAll=false
-        cd frontend && npm test -- --watchAll=false
+        cd quickbg && npm test -- --watchAll=false
+        cd quickbg/frontend && npm test -- --watchAll=false
         cd ../worker && npm test
 
   deploy-production:
@@ -56,7 +56,7 @@ jobs:
     
     - name: Build project
       run: |
-        cd frontend && npm run build
+        cd quickbg/frontend && npm run build
         cd ../worker && npm run build
     
     - name: Deploy to Cloudflare
@@ -65,7 +65,7 @@ jobs:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         command: deploy
-        workingDirectory: 'worker'
+        workingDirectory: 'quickbg/worker'
         environment: 'production'
     
     - name: Deploy frontend to Cloudflare Pages
@@ -74,7 +74,7 @@ jobs:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         projectName: 'quickbg'
-        directory: 'frontend/dist'
+        directory: 'quickbg/frontend/dist'
         branch: 'main'
     
     - name: Send deployment notification
@@ -101,13 +101,13 @@ jobs:
     
     - name: Install dependencies
       run: |
-        npm ci
-        cd frontend && npm ci
+        cd quickbg && npm ci
+        cd quickbg/frontend && npm ci
         cd ../worker && npm ci
     
     - name: Build project
       run: |
-        cd frontend && npm run build
+        cd quickbg/frontend && npm run build
         cd ../worker && npm run build
     
     - name: Deploy to Cloudflare (Staging)
@@ -116,7 +116,7 @@ jobs:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         command: deploy
-        workingDirectory: 'worker'
+        workingDirectory: 'quickbg/worker'
         environment: 'staging'
     
     - name: Deploy frontend to Cloudflare Pages (Preview)
@@ -125,7 +125,7 @@ jobs:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         projectName: 'quickbg'
-        directory: 'frontend/dist'
+        directory: 'quickbg/frontend/dist'
         branch: 'preview'
     
     - name: Send preview deployment notification
