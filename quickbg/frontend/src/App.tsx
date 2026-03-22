@@ -31,7 +31,7 @@ function App() {
       ui: { theme: 'auto', language: 'zh', animationSpeed: 'normal', showTutorial: true },
       advanced: { 
         apiEndpoint: defaultApiEndpoint, 
-        useMockApi: import.meta.env.DEV || false, 
+        useMockApi: import.meta.env.MODE === 'development', 
         debugMode: false, 
         saveHistory: true 
       }
