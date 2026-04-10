@@ -4,7 +4,7 @@ import App from './App.tsx'
 import ErrorBoundary from './components/ErrorBoundary'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById('app')!).render(
   <React.StrictMode>
     <ErrorBoundary>
       <App />

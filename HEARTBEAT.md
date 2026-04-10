@@ -1,5 +1,27 @@
 # HEARTBEAT.md
 
-# Keep this file empty (or with only comments) to skip heartbeat API calls.
+# 码小助工作流心跳任务
 
-# Add tasks below when you want the agent to check something periodically.
+# 每日 09:00 记录工作重点
+- 09:00: 读取 memory/今天.md，更新工作重点
+
+# 每周一 09:30 汇总上周日志
+- mon@09:30: 汇总上周工作要点到周报
+
+# 每周一 10:00 清理上上周日志
+- mon@10:00: 删除 memory/上上周.md 文件
+
+---
+
+# 工作流说明
+
+## 每日记录工作重点
+每天早上更新 memory/YYYY-MM-DD.md 的工作重点和待办
+
+## 每周一汇总
+- 汇总上周(上周一到上周日)的工作日志要点
+- 写入 memory/summary-YYYY-Www.md (周报)
+
+## 清理上上周
+- 删除 memory/上上周.md 释放空间
+- 只保留最近3周的日志

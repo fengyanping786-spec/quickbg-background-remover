@@ -69,6 +69,9 @@ async function removeBackground(imageBuffer, apiKey) {
 async function handleRemoveBg(request, env) {
   try {
     // 检查API密钥
+    console.log('ENV KEYS:', Object.keys(env || {}))
+    console.log('REMOVE_BG_API_KEY:', env.REMOVE_BG_API_KEY ? 'SET' : 'NOT SET')
+    
     if (!env.REMOVE_BG_API_KEY) {
       throw new Error('Remove.bg API密钥未配置')
     }
@@ -76,6 +79,9 @@ async function handleRemoveBg(request, env) {
     // 获取上传的文件
     const formData = await request.formData()
     const file = formData.get('image')
+    
+    console.log('FILE:', file ? file.name : 'null')
+    console.log('FILE TYPE:', file ? file.type : 'null')
 
     if (!file) {
       throw new Error('未找到图片文件')
@@ -83,6 +89,7 @@ async function handleRemoveBg(request, env) {
 
     // 验证文件
     validateImageFile(file)
+    console.log('FILE VALIDATED')
 
     // 读取文件内容
     const arrayBuffer = await file.arrayBuffer()

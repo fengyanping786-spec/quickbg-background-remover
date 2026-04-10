@@ -4,7 +4,7 @@ main = "src/index.js"
 account_id = "1813a08569eee03a6147d2011d25a607"
 
 [vars]
-REMOVE_BG_API_KEY = "{{ secrets.REMOVE_BG_API_KEY }}"
+REMOVE_BG_API_KEY = "tWEPNZdS5kCNdgdvmR2tjWoL"
 
 [dev]
 port = 8787
